@@ -27,10 +27,10 @@ stoi = {s: i + 1 for i, s in enumerate(unique_words)}
 stoi['.'] = 0  
 itos = {i: s for s, i in stoi.items()}  
 
-with open("C:/Users/Saharsh/OneDrive/Desktop/ML-3/stoi.json", "w") as f:
+with open(r"C:\Users\sivak\Desktop\ML3\stoi.json", "w") as f:
     json.dump(stoi,f)
 
-with open("C:/Users/Saharsh/OneDrive/Desktop/ML-3/itos.json", "w") as f:
+with open(r"C:\Users\sivak\Desktop\ML3\itos.json", "w") as f:
     json.dump(itos,f)
 
 
