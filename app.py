@@ -16,7 +16,7 @@ def preprocess_input(input_text, stoi, block_size=15):
     input_words = input_text.strip().lower().split()
     input_indices = [stoi.get(word, stoi['.']) for word in input_words]
     input_indices = input_indices[-block_size:]
-    input_tensor = input_indices + [0] * (block_size - len(input_indices))
+    input_tensor = [0] * (block_size - len(input_indices))+ input_indices 
     return torch.tensor(input_tensor[-block_size:], dtype=torch.long).unsqueeze(0)
 
 def decode_index(indices):
@@ -25,14 +25,14 @@ def decode_index(indices):
 def predict_next_words(input_text, k):
     input_tensor = preprocess_input(input_text, stoi, block_size)
     model.eval()
-    predicted_words = []
+    predicted_words = input_text+" "
 
     for _ in range(k):
         with torch.no_grad():
             output = model(input_tensor) 
             top_k_indices = output.topk(1).indices[0] 
             predicted_word = decode_index(top_k_indices)
-            predicted_words.append(predicted_word[0])
+            predicted_words+=(predicted_word[0]+" ")
             
             new_input = input_tensor[0].tolist()[1:] + top_k_indices.tolist() 
             input_tensor = torch.tensor(new_input, dtype=torch.long).unsqueeze(0).to(input_tensor.device)  
